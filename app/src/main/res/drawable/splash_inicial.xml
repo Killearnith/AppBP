@@ -3,6 +3,6 @@
     <item
         android:drawable="@drawable/bg_gradient"/>
     <item
-        android:drawable="@drawable/logoapp"
+        android:drawable="@drawable/logoconfondoapp"
         android:gravity="center"/>
 </layer-list>
