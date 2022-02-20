@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">KEvolution</string>
+    <string name="title_activity_telefono">TelefonoActivity</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="cabeceratelefono"> Seleccione un número de telefono para verificar su identidad:</string>
+    <string name="selBoton"> Seleccionar </string>
+    <string name="ntelefonoes"> El  número de telefono seleccionado es:</string>
+    <string name="continuar">Continuar</string>
+    <string name="foto_app">Foto APP</string>
 </resources>
