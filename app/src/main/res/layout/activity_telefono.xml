@@ -4,19 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".telefonoActivity">
+    tools:context=".telefonoActivity"
+    android:background="@drawable/b1">
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="215dp"
-        android:layout_height="206dp"
+        android:layout_width="200dp"
+        android:layout_height="196dp"
         android:layout_marginStart="96dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="583dp"
         android:contentDescription="@string/foto_app"
-        android:theme="@style/Widget.AppCompat.Button.Colored"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/logoconfondoapp"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
@@ -25,46 +29,54 @@
         android:layout_width="218dp"
         android:layout_height="55dp"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="348dp"
+        android:textSize="6.7pt"
+        android:layout_marginTop="240dp"
         android:text="@string/cabeceratelefono"
+        android:fontFamily="@font/roboto_slab"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:id="@+id/botonSelTel"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:fontFamily="@font/sigmar_one"
+        android:text="@string/selBoton"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="320dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="218dp"
         android:layout_height="55dp"
         android:layout_marginStart="96dp"
-        android:layout_marginLeft="284dp"
-        android:layout_marginTop="460dp"
+        android:layout_marginTop="420dp"
+        android:textSize="6.7pt"
         android:text="@string/ntelefonoes"
+        android:fontFamily="@font/roboto_slab"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/botonSelTel"
-        android:layout_width="220dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="396dp"
-        android:text="@string/selBoton"
-        android:theme="@android:color/holo_green_dark"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+/>
 
     <EditText
         android:autofillHints="phone"
         android:id="@+id/NumTel"
         android:inputType="none"
+        android:focusable="false"
         android:layout_width="220dp"
         android:layout_height="50dp"
+        android:fontFamily="@font/roboto_slab"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="528dp"
+        android:layout_marginTop="470dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="200dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-         />
+        />
 
     <Button
         android:id="@+id/buttonContinuar"
@@ -72,9 +84,13 @@
         android:layout_height="90dp"
         android:layout_marginStart="88dp"
         android:layout_marginTop="596dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="200dp"
         android:text="@string/continuar"
-        android:theme="@android:color/holo_green_light"
+        android:fontFamily="@font/sigmar_one"
+        android:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

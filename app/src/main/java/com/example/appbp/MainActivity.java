@@ -1,5 +1,6 @@
 package com.example.appbp;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -14,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_AppBP);
         setContentView(R.layout.activity_telefono);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         /*
         // Inside Main Activity
