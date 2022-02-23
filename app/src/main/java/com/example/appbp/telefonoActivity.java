@@ -12,5 +12,6 @@ public class telefonoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefono);
         //NO SE USA :C
+
     }
 }

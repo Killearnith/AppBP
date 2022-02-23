@@ -61,11 +61,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 />
+     <!--android:focusable="false"-->
 
     <EditText
         android:autofillHints="phone"
         android:id="@+id/NumTel"
-        android:inputType="none"
+        android:inputType="phone"
         android:focusable="false"
         android:layout_width="220dp"
         android:layout_height="50dp"
