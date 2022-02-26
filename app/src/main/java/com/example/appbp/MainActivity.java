@@ -1,8 +1,6 @@
 package com.example.appbp;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -12,9 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsApi;
@@ -27,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int RESOLVE_HINT = 200;       //Codigo de respuesta correcto para obtener el número de telefono
     private GoogleApiClient apiClient;
     private String numTel;
-    private Button entrada;
+    private Button entrada , bCont;
+    private ProgressBar pBar;
     private EditText textoMovil;
 
     @Override
@@ -43,13 +41,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Enlazar views
         entrada = (Button) findViewById(R.id.botonSelTel);
+        bCont = (Button) findViewById(R.id.buttonContinuar);
+        pBar = (ProgressBar) findViewById(R.id.progressBar);
+        pBar.setVisibility(View.INVISIBLE);
         textoMovil = (EditText) findViewById(R.id.NumTel);
         entrada.setOnClickListener(this);       //Asignar el evento al botón
 
         /*
         // Inside Main Activity
         Log.d(TAG, "HashKey: " + appSignatureHashHelper.getAppSignatures().get(0));
-         */
+        */
     }
 
     // Construct a request for phone numbers and show the picker
@@ -93,9 +94,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    public void onContinuar(View v) {
+        pBar.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onClick(View v) {
-
         requestHint();
     }
 }

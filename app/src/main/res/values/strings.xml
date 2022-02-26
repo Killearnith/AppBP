@@ -7,4 +7,5 @@
     <string name="ntelefonoes"> El  número de telefono seleccionado es:</string>
     <string name="continuar">Continuar</string>
     <string name="foto_app">Foto APP</string>
+    <string name="tel_fono_seleccionado">Teléfono seleccionado</string>
 </resources>
