@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.appbp.Android.AppSignatureHelper;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsApi;
@@ -25,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    //Codigo HASH de la app es: g3Mji1k3j7Q
 
     private static final String TAG = "MenuInicial";
     private static final int RESOLVE_HINT = 200;       //Codigo de respuesta correcto para obtener el número de telefono
@@ -104,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onContinuar(View v) {
         pBar.setVisibility(View.VISIBLE);
         inicioClienteSMSRetriever();
+        //Código necesario para obtener el codigo hash de la app
+        //AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);
+        //Log.d(TAG,"El código hash de la app es: "+appSignatureHelper.getAppSignatures().get(0));
+        //Codigo HASH de la app es: g3Mji1k3j7Q
+
     }
 
     @Override
