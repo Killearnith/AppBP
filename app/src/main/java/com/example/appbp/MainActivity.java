@@ -1,5 +1,4 @@
 package com.example.appbp;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,20 +18,13 @@ import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsApi;
 import com.google.android.gms.auth.api.credentials.HintRequest;
-import com.google.android.gms.auth.api.phone.SmsRetriever;
-import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     //Codigo HASH de la app es: g3Mji1k3j7Q
 
     private static final String TAG = "MenuInicial";
     private static final int RESOLVE_HINT = 200;       //Codigo de respuesta correcto para obtener el número de telefono
-    private GoogleApiClient apiClient;
-    private String numTel;
+    private String numTel, numSaneado;
     private Button entrada , bCont;
     private ProgressBar pBar;
     private EditText textoMovil;
@@ -55,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pBar.setVisibility(View.INVISIBLE);
         textoMovil = (EditText) findViewById(R.id.NumTel);
         entrada.setOnClickListener(this);       //Asignar el evento al botón
-
         /*
         // Inside Main Activity
         Log.d(TAG, "HashKey: " + appSignatureHashHelper.getAppSignatures().get(0));
@@ -93,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case RESULT_OK:
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                     numTel=credential.getId();  //<-- obtenemos el string correspondiente al numbero de telefono seleccionado
-                    String numSaneado= numTel.substring(0,3)+" "+numTel.substring(3);   //Saneamos la salida en formato más legible
+                    numSaneado= numTel.substring(0,3)+" "+numTel.substring(3);   //Saneamos la salida en formato más legible
                     textoMovil.setText(numSaneado); ///Ponemos el texto en el EditText
                     break;
                 default:
@@ -103,50 +94,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     public void onContinuar(View v) {
         pBar.setVisibility(View.VISIBLE);
-        inicioClienteSMSRetriever();
+        Intent otpIntent = new Intent(MainActivity.this,OtpActivity.class); //Mover de la Clase A a la B
+        otpIntent.putExtra("tel",numSaneado);                                          //Pasamos el num de Telefono
+        startActivity(otpIntent);
         //Código necesario para obtener el codigo hash de la app
         //AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);
         //Log.d(TAG,"El código hash de la app es: "+appSignatureHelper.getAppSignatures().get(0));
         //Codigo HASH de la app es: g3Mji1k3j7Q
-
     }
 
     @Override
     public void onClick(View v) {
         requestHint();
-    }
-
-
-    private void inicioClienteSMSRetriever(){
-        // Get an instance of SmsRetrieverClient, used to start listening for a matching
-        // SMS message.
-        SmsRetrieverClient client = SmsRetriever.getClient(this /* context */);
-
-        // Starts SmsRetriever, which waits for ONE matching SMS message until timeout
-        // (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
-        // action SmsRetriever#SMS_RETRIEVED_ACTION.
-        Task<Void> task = client.startSmsRetriever();
-
-        // Listen for success/failure of the start Task. If in a background thread, this
-        // can be made blocking using Tasks.await(task, [timeout]);
-        task.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // Successfully started retriever, expect broadcast intent
-                // ...
-            }
-        });
-
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Failed to start retriever, inspect Exception for more details
-                // ...
-            }
-        });
     }
 
 }
