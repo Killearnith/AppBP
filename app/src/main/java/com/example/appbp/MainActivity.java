@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         assert actionBar != null;
         actionBar.hide();
 
-
         //Enlazar views
         entrada = (Button) findViewById(R.id.botonSelTel);
         bCont = (Button) findViewById(R.id.buttonContinuar);
