@@ -96,7 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onContinuar(View v) {
         pBar.setVisibility(View.VISIBLE);
         Intent otpIntent = new Intent(MainActivity.this,OtpActivity.class); //Mover de la Clase A a la B
-        otpIntent.putExtra("tel",numSaneado);                                          //Pasamos el num de Telefono
+        otpIntent.putExtra("tel",numSaneado);
+        Toast.makeText(this, "Num tel es: "+numSaneado, Toast.LENGTH_LONG).show();
+//Pasamos el num de Telefono
         startActivity(otpIntent);
         //Código necesario para obtener el codigo hash de la app
         //AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);

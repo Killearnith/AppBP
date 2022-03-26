@@ -21,9 +21,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +37,10 @@ public class OtpActivity extends AppCompatActivity {
     private ProgressBar pBar;
     private EditText cOTP;
     private String clave, nTel;
+
+    private FirebaseApp app;
+    private FirebaseAuth auten;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,72 +63,52 @@ public class OtpActivity extends AppCompatActivity {
         pBar = (ProgressBar) findViewById(R.id.progressBar);
         pBar.setVisibility(View.INVISIBLE);
 
+
+        //Autenticar en la BD
+
+        app = FirebaseApp.initializeApp(this);
+        auten = FirebaseAuth.getInstance();
         //Comenzamos el cliente SMSRetriever
-        inicioClienteSMSRetriever();
+        //inicioClienteSMSRetriever();
 
         //API Rest request
         final TextView textView = (TextView) findViewById(R.id.text);
-    /*
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json";
-        Log.d("Test","Aqui llego");
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        textView.setText("Response is: "+ response);
-                    }
-                }, new Response.ErrorListener() {
+
+        auten.signInWithEmailAndPassword("a@a.com","123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                String errorMessage = error.getMessage();
-                textView.setText("That didn't work! "+errorMessage);
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    String url ="https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth=eyJhbGciOiJSUzI1NiIsImtpZCI6ImIwNmExMTkxNThlOGIyODIxNzE0MThhNjdkZWE4Mzc0MGI1ZWU3N2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc21zcmV0cmlldmVyc2VydmVyYSIsImF1ZCI6InNtc3JldHJpZXZlcnNlcnZlcmEiLCJhdXRoX3RpbWUiOjE2NDgyNTA4MTksInVzZXJfaWQiOiJsejRoYnNGU1hoYXdpTGhtNURtODdNZnlkTkQzIiwic3ViIjoibHo0aGJzRlNYaGF3aUxobTVEbTg3TWZ5ZE5EMyIsImlhdCI6MTY0ODI1MDgxOSwiZXhwIjoxNjQ4MjU0NDE5LCJlbWFpbCI6ImFAYS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYUBhLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.cykFDDStEQ1m0QQdeAdo0RR0aBGyb6CJci0xRjV-v_BdZwga8-ZNXW3zuxRdfsj3vJd45zddEMD_mfPUxtXpY5o1D-cwHn24YTVDVyNdTtUiE8m-2D8JcDwYuMLavdIpnI32hvZ4BvSRIWqCfjVOxcGhbun1t-znvyZn9ns2rZgyC89yAUiLIiOrzuqE0BdNWW_D6SUGbs-HZgHWVbz246POfaAIKvKnKMlK3gM6Uh8t7AZQqT1c6Ub9EvjZ6gjeiChTCL1oN_swx5f4f5S9T5RjjEyHWPBMDZ3AmeZwR7GsigI7avIfLgNoHAlY4z0_vhEGAwn3gl93XayLtVPMxQ";
+                    Log.d("Test","Aqui llego");
+                    // Request a string response from the provided URL.
+                    RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
+                    JSONObject postData = new JSONObject();
+                    try {
+                        postData.put("tel", nTel);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, postData, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Toast.makeText(getApplicationContext(), "Response: "+response, Toast.LENGTH_LONG).show();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                        }
+                    });
+                    requestQueue.add(jsonObjectRequest);
+                    Log.d("Test","Aqui tmb");
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Error de auth", Toast.LENGTH_LONG);
+                }
             }
         });
-        queue.add(stringRequest);
-        Log.d("Test","Aqui tmb");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        textView.setText("Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                });
-        */
-
         // Instantiate the RequestQueue.
-        String url ="https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json";
-        Log.d("Test","Aqui llego");
-        // Request a string response from the provided URL.
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JSONObject postData = new JSONObject();
-        try {
-            postData.put("tel", nTel);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, postData, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(getApplicationContext(), "Response: "+response, Toast.LENGTH_LONG).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-        Log.d("Test","Aqui tmb");
+
     }
 
     public void onContinuar(View v) {
