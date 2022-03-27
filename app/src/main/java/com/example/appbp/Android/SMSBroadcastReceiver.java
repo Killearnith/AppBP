@@ -6,6 +6,7 @@ import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 //---Imports de google para la API SMSRetriever
+import com.example.appbp.OtpActivity;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Status;
@@ -13,14 +14,14 @@ import com.google.android.gms.common.api.Status;
 import com.example.appbp.Modelo.OTPClave;
 
 /**
- * SMSBroadcastReceiver recibe el mensaje SMS llega a la aplicacióny parsea los campos para obtener los diferentes,
+ * SMSBroadcastReceiver recibe el mensaje SMS llega a la aplicación y parsea los campos para obtener los diferentes,
  * datos que se mandan por el mensajes SMS como el código OTP.
  * El SMS se obtiene de SmsRetriever.SMS_RETRIEVED_ACTION.
  */
 public class SMSBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "BroadcastSMS";
-    private OTPClave otpClave;
+    private OTPClave otpClave = new OTPClave("1");
     @Override
     public void onReceive(Context context, Intent intent) {
         if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
@@ -33,9 +34,15 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                         String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
                         if (message != null) {
                             String[] partes = message.split(" ");
-                            otpClave.setClave(partes[4]);
+                            String[] partes2= partes[4].split("\n");
+                            //otpClave.setClave(partes[4]);
+                            Intent i = new Intent(context, OtpActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.putExtra("message", partes2[0]);
+                            context.startActivity(i);
+
                         }
-                    }else if (CommonStatusCodes.TIMEOUT==15){
+                    }else if (CommonStatusCodes.TIMEOUT==5){
                         Log.d(TAG,"El tiempo del broadcast ha excedido su limite de 5 minutos.");
                     }else Log.d(TAG,"Error no contemplado.");
             }

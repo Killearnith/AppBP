@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.appbp.Modelo.OTPClave;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,10 +39,10 @@ public class OtpActivity extends AppCompatActivity {
     private ProgressBar pBar;
     private EditText cOTP;
     private String clave, nTel;
-
     private FirebaseApp app;
     private FirebaseAuth auten;
-
+    private String auth;
+    private OTPClave otpC = new OTPClave("1");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,7 @@ public class OtpActivity extends AppCompatActivity {
             nTel = extras.getString("tel");
         }
 
+
         //Enlazar views
         cOTP = (EditText) findViewById(R.id.ClaveOTP);
         bCont = (Button) findViewById(R.id.buttonContinuar);
@@ -69,16 +72,46 @@ public class OtpActivity extends AppCompatActivity {
         app = FirebaseApp.initializeApp(this);
         auten = FirebaseAuth.getInstance();
         //Comenzamos el cliente SMSRetriever
-        //inicioClienteSMSRetriever();
+        inicioClienteSMSRetriever();
 
         //API Rest request
         final TextView textView = (TextView) findViewById(R.id.text);
+
+        //Obtener token de Auth
+        String url ="https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCO0wQa_fia6ojLkFCzLG-sft5XUWF2Skw";
+        Log.d("Test","Aqui llego");
+        // Request a string response from the provided URL.
+        RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("email","a@a.com");
+            postData.put("password", "123456");
+            postData.put("returnSecureToken", true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    auth = response.getString("idToken");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
 
         auten.signInWithEmailAndPassword("a@a.com","123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    String url ="https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth=eyJhbGciOiJSUzI1NiIsImtpZCI6ImIwNmExMTkxNThlOGIyODIxNzE0MThhNjdkZWE4Mzc0MGI1ZWU3N2UiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc21zcmV0cmlldmVyc2VydmVyYSIsImF1ZCI6InNtc3JldHJpZXZlcnNlcnZlcmEiLCJhdXRoX3RpbWUiOjE2NDgyNTA4MTksInVzZXJfaWQiOiJsejRoYnNGU1hoYXdpTGhtNURtODdNZnlkTkQzIiwic3ViIjoibHo0aGJzRlNYaGF3aUxobTVEbTg3TWZ5ZE5EMyIsImlhdCI6MTY0ODI1MDgxOSwiZXhwIjoxNjQ4MjU0NDE5LCJlbWFpbCI6ImFAYS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYUBhLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.cykFDDStEQ1m0QQdeAdo0RR0aBGyb6CJci0xRjV-v_BdZwga8-ZNXW3zuxRdfsj3vJd45zddEMD_mfPUxtXpY5o1D-cwHn24YTVDVyNdTtUiE8m-2D8JcDwYuMLavdIpnI32hvZ4BvSRIWqCfjVOxcGhbun1t-znvyZn9ns2rZgyC89yAUiLIiOrzuqE0BdNWW_D6SUGbs-HZgHWVbz246POfaAIKvKnKMlK3gM6Uh8t7AZQqT1c6Ub9EvjZ6gjeiChTCL1oN_swx5f4f5S9T5RjjEyHWPBMDZ3AmeZwR7GsigI7avIfLgNoHAlY4z0_vhEGAwn3gl93XayLtVPMxQ";
+                    String url ="https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth="+auth;
                     Log.d("Test","Aqui llego");
                     // Request a string response from the provided URL.
                     RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
@@ -128,7 +161,6 @@ public class OtpActivity extends AppCompatActivity {
         // Get an instance of SmsRetrieverClient, used to start listening for a matching
         // SMS message.
         SmsRetrieverClient client = SmsRetriever.getClient(this /* context */);
-
         // Starts SmsRetriever, which waits for ONE matching SMS message until timeout
         // (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
         // action SmsRetriever#SMS_RETRIEVED_ACTION.
@@ -140,7 +172,9 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 // Successfully started retriever, expect broadcast intent
-                // ...
+                Intent intent = getIntent();
+                String msg = intent.getStringExtra("message");
+                cOTP.setText(msg);
             }
         });
 
@@ -148,7 +182,6 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 // Failed to start retriever, inspect Exception for more details
-                // ...
             }
         });
     }

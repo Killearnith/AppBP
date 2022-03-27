@@ -46,10 +46,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pBar.setVisibility(View.INVISIBLE);
         textoMovil = (EditText) findViewById(R.id.NumTel);
         entrada.setOnClickListener(this);       //Asignar el evento al botón
-        /*
+
         // Inside Main Activity
+    /*
+        AppSignatureHelper appSignatureHashHelper = new AppSignatureHelper(MainActivity.this);
         Log.d(TAG, "HashKey: " + appSignatureHashHelper.getAppSignatures().get(0));
-        */
+    */
+
     }
 
     // Construct a request for phone numbers and show the picker
@@ -96,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onContinuar(View v) {
         pBar.setVisibility(View.VISIBLE);
         Intent otpIntent = new Intent(MainActivity.this,OtpActivity.class); //Mover de la Clase A a la B
-        otpIntent.putExtra("tel",numSaneado);
-        Toast.makeText(this, "Num tel es: "+numSaneado, Toast.LENGTH_LONG).show();
+        otpIntent.putExtra("tel",numTel);
+        Toast.makeText(this, "Num tel es: "+numTel, Toast.LENGTH_LONG).show();
 //Pasamos el num de Telefono
         startActivity(otpIntent);
         //Código necesario para obtener el codigo hash de la app
