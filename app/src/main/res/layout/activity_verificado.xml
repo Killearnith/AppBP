@@ -24,7 +24,7 @@
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewMedio"
         android:layout_width="260dp"
         android:layout_height="140dp"
         android:layout_marginStart="62dp"

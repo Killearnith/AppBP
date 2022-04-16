@@ -181,22 +181,22 @@ public class OtpActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    auth = response.getString("idToken");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, postData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        auth = response.getString("idToken");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
         //
         //Codigo correspondiente al envio por API Rest al Servidor para comprobar la clave OTP.
         auten.signInWithEmailAndPassword("a@a.com","123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -204,7 +204,6 @@ public class OtpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     String url ="https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth="+auth;
-                    Log.d("Test","Aqui llego");
                     // Request a string response from the provided URL.
                     RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
                     JSONObject newData = new JSONObject();
@@ -217,7 +216,10 @@ public class OtpActivity extends AppCompatActivity {
                     JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.PUT, url, newData, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(getApplicationContext(), "Response: "+response, Toast.LENGTH_LONG).show();
+                            Log.d("FIN", "Pasamos a la siguiente actividad");
+                            Intent verifIntent = new Intent(OtpActivity.this,verificadoActivity.class); //Mover de la Clase B a la C
+                            verifIntent.putExtra("auth",auth); //Mandamos el token de auth para API REST.
+                            startActivity(verifIntent);
                         }
                     }, new Response.ErrorListener() {
                         @Override
