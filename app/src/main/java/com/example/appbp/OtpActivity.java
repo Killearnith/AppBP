@@ -163,12 +163,10 @@ public class OtpActivity extends AppCompatActivity {
     public void onContinuar(View v) {
         pBar.setVisibility(View.VISIBLE);
         clave = Integer.parseInt(String.valueOf(cOTP.getText()));
-        //clave = String.valueOf(cOTP.getText());
+        //FIX#01 Guardar el num tel en SharedPreferences para obtenerlo despues en la ivnvocación posterior.
         SharedPreferences sharedPref = getSharedPreferences("guardartel",MODE_PRIVATE);
         String tel = sharedPref.getString("tel","No ha llegado");
-
         Toast.makeText(this, "tel shared es: "+tel, Toast.LENGTH_LONG).show();
-
         //
         //Obtener token de Auth
         String url ="https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCO0wQa_fia6ojLkFCzLG-sft5XUWF2Skw";
