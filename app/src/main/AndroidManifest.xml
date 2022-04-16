@@ -3,6 +3,8 @@
     package="com.example.appbp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_PERMISSION" />
+
 
     <application
         android:allowBackup="true"
@@ -11,6 +13,9 @@
         android:roundIcon="@drawable/logoapp"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppBP">
+        <activity
+            android:name=".verificadoActivity"
+            android:exported="false" />
         <activity
             android:name=".OtpActivity"
             android:exported="false" />
@@ -31,12 +36,15 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <receiver android:name=".Android.SMSBroadcastReceiver" android:exported="true">
+
+        <receiver
+            android:name=".Android.SMSBroadcastReceiver"
+            android:exported="true">
+
             <intent-filter>
-                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
     </application>
-
 
 </manifest>

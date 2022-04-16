@@ -1,5 +1,7 @@
 package com.example.appbp.Android;
 
+import static com.google.android.gms.auth.api.phone.SmsRetriever.SMS_RETRIEVED_ACTION;
+
 import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +23,11 @@ import com.example.appbp.Modelo.OTPClave;
 public class SMSBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "BroadcastSMS";
-    private OTPClave otpClave = new OTPClave("1");
+    private String nTel;
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
+        String nTel = intent.getStringExtra("tel");
+        if (SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
@@ -38,9 +41,13 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                             //otpClave.setClave(partes[4]);
                             Intent i = new Intent(context, OtpActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             i.putExtra("message", partes2[0]);
+                            //i.putExtra("tel", nTel);
                             context.startActivity(i);
-
+                            //i.setAction(SMS_RETRIEVED_ACTION);
+                            //context.sendBroadcast(i);
                         }
                     }else if (CommonStatusCodes.TIMEOUT==5){
                         Log.d(TAG,"El tiempo del broadcast ha excedido su limite de 5 minutos.");
