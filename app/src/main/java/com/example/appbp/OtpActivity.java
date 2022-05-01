@@ -80,6 +80,7 @@ public class OtpActivity extends AppCompatActivity {
         bCont = (Button) findViewById(R.id.buttonContinuar);
         pBar = (ProgressBar) findViewById(R.id.progressBar);
         pBar.setVisibility(View.INVISIBLE);
+        bCont.setVisibility(View.INVISIBLE);
 
 
         //Autenticar en la BD
@@ -265,7 +266,9 @@ public class OtpActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 String msg = intent.getStringExtra("message");
                 cOTP.setText(msg);
-
+                if(msg!=null) {
+                    bCont.setVisibility(View.VISIBLE);
+                }
             }
         });
 

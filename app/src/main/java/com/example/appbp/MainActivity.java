@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bCont = (Button) findViewById(R.id.buttonContinuar);
         pBar = (ProgressBar) findViewById(R.id.progressBar);
         pBar.setVisibility(View.INVISIBLE);
+        bCont.setVisibility(View.INVISIBLE);
         textoMovil = (EditText) findViewById(R.id.NumTel);
         entrada.setOnClickListener(this);       //Asignar el evento al botón
 
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     numTel = credential.getId();  //<-- obtenemos el string correspondiente al numbero de telefono seleccionado
                     numSaneado = numTel.substring(0, 3) + " " + numTel.substring(3);   //Saneamos la salida en formato más legible
                     textoMovil.setText(numSaneado); ///Ponemos el texto en el EditText
+                    bCont.setVisibility(View.VISIBLE);
                     break;
                 default:
                     Toast.makeText(this, "Caso no contemplado", Toast.LENGTH_LONG).show();
