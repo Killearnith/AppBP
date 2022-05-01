@@ -1,4 +1,5 @@
 package com.example.appbp;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,13 +20,13 @@ import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsApi;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     //Codigo HASH de la app es: g3Mji1k3j7Q
 
     private static final String TAG = "MenuInicial";
     private static final int RESOLVE_HINT = 200;       //Codigo de respuesta correcto para obtener el número de telefono
     private String numTel, numSaneado;
-    private Button entrada , bCont;
+    private Button entrada, bCont;
     private ProgressBar pBar;
     private EditText textoMovil;
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Obtener y usar el número de telefono
     @Override
-    public void onActivityResult ( int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESOLVE_HINT) {
             switch (resultCode) {    //RESULT_OK == 1--> Si selecciona correctamente, 0 --> Si pulsa fuera
@@ -85,24 +86,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case RESULT_OK:
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-                    numTel=credential.getId();  //<-- obtenemos el string correspondiente al numbero de telefono seleccionado
-                    numSaneado= numTel.substring(0,3)+" "+numTel.substring(3);   //Saneamos la salida en formato más legible
+                    numTel = credential.getId();  //<-- obtenemos el string correspondiente al numbero de telefono seleccionado
+                    numSaneado = numTel.substring(0, 3) + " " + numTel.substring(3);   //Saneamos la salida en formato más legible
                     textoMovil.setText(numSaneado); ///Ponemos el texto en el EditText
                     break;
                 default:
                     Toast.makeText(this, "Caso no contemplado", Toast.LENGTH_LONG).show();
             }
-            Log.d(TAG,"Llega al resultado de la actividad de obtener el número de telefono: Codigo:"+resultCode);
+            Log.d(TAG, "Llega al resultado de la actividad de obtener el número de telefono: Codigo:" + resultCode);
         }
     }
 
     public void onContinuar(View v) {
-        pBar.setVisibility(View.VISIBLE);
-        Intent otpIntent = new Intent(MainActivity.this,OtpActivity.class); //Mover de la Clase A a la B
-        otpIntent.putExtra("tel",numTel);
-        Toast.makeText(this, "Num tel es: "+numTel, Toast.LENGTH_LONG).show();
-        //Pasamos el num de Telefono
-        startActivity(otpIntent);
+        //Comprobamos que el campo pasado no sea nulo
+        if (!(textoMovil.getText().toString().equals(""))) {
+            pBar.setVisibility(View.VISIBLE);
+            Intent otpIntent = new Intent(MainActivity.this, OtpActivity.class); //Mover de la Clase A a la B
+            otpIntent.putExtra("tel", numTel);
+            //Toast.makeText(this, "Num tel es: " + numTel, Toast.LENGTH_LONG).show();
+            //Pasamos el num de Telefono
+            startActivity(otpIntent);
+        } else
+            Toast.makeText(this, "Es necesario pasar un número de teléfono", Toast.LENGTH_LONG).show();
         //Código necesario para obtener el codigo hash de la app
         //AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);
         //Log.d(TAG,"El código hash de la app es: "+appSignatureHelper.getAppSignatures().get(0));
