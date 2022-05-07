@@ -1,4 +1,4 @@
-package com.example.appbp.Android;
+package com.example.appbp.Actividades.Android;
 
 import static com.google.android.gms.auth.api.phone.SmsRetriever.SMS_RETRIEVED_ACTION;
 
@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 //---Imports de google para la API SMSRetriever
-import com.example.appbp.OtpActivity;
+import com.example.appbp.Actividades.OtpActivity;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Status;

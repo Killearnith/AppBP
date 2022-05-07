@@ -1,13 +1,11 @@
-package com.example.appbp;
+package com.example.appbp.Actividades;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -17,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.appbp.Modelo.Datos;
+import com.example.appbp.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

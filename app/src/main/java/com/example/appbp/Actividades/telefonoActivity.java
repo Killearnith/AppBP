@@ -1,4 +1,4 @@
-package com.example.appbp;
+package com.example.appbp.Actividades;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
+import com.example.appbp.R;
 
 public class telefonoActivity extends AppCompatActivity {
 
