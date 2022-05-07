@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.appbp.Modelo.Datos;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class verificadoActivity extends AppCompatActivity {
     private String auth, token;
     private TextView medio;
     private static final String TAG = "verifActivity";
+    private Datos dat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,8 @@ public class verificadoActivity extends AppCompatActivity {
         //Obtenemos los datos del bundle de la actividad anterior
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            auth = extras.getString("auth");
+            dat = (Datos) extras.getParcelable("datos");        //Obtenemos el modelo de la actividad anterior
+            auth = dat.getAuth();
         }
         //Esperamos 3 segundos
         Handler handler = new Handler();
@@ -57,6 +60,7 @@ public class verificadoActivity extends AppCompatActivity {
                                 try {
                                     token = response.getString("token");
                                     medio.setText("El token recibido es: "+token);
+                                    dat.setTokenconex(token);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

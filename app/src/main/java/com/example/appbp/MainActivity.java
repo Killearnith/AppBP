@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.appbp.Android.AppSignatureHelper;
+import com.example.appbp.Modelo.Datos;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsApi;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button entrada, bCont;
     private ProgressBar pBar;
     private EditText textoMovil;
+    private Datos datos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textoMovil = (EditText) findViewById(R.id.NumTel);
         entrada.setOnClickListener(this);       //Asignar el evento al botón
 
+
+        //Creamos el modelo
+        datos = new Datos();
         // Inside Main Activity
     /*
         AppSignatureHelper appSignatureHashHelper = new AppSignatureHelper(MainActivity.this);
@@ -88,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case RESULT_OK:
                     Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                     numTel = credential.getId();  //<-- obtenemos el string correspondiente al numbero de telefono seleccionado
+                    datos.setTelefono(numTel);      //Guardamos el numero de tel en el modelo
                     numSaneado = numTel.substring(0, 3) + " " + numTel.substring(3);   //Saneamos la salida en formato más legible
                     textoMovil.setText(numSaneado); ///Ponemos el texto en el EditText
                     bCont.setVisibility(View.VISIBLE);
@@ -104,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!(textoMovil.getText().toString().equals(""))) {
             pBar.setVisibility(View.VISIBLE);
             Intent otpIntent = new Intent(MainActivity.this, OtpActivity.class); //Mover de la Clase A a la B
-            otpIntent.putExtra("tel", numTel);
+            //otpIntent.putExtra("tel", numTel);
+            otpIntent.putExtra("datos", datos);
             //Toast.makeText(this, "Num tel es: " + numTel, Toast.LENGTH_LONG).show();
             //Pasamos el num de Telefono
             startActivity(otpIntent);
