@@ -1,4 +1,4 @@
-package com.example.appbp.Actividades.Android;
+package com.example.appbp.Actividades.Servicios;
 
 import static com.google.android.gms.auth.api.phone.SmsRetriever.SMS_RETRIEVED_ACTION;
 
