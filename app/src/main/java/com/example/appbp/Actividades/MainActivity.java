@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    // Construct a request for phone numbers and show the picker
+    //Constructor para solicitar el numero de telefono
     private void requestHint() {
         HintRequest hintRequest = new HintRequest.Builder()
                 .setPhoneNumberIdentifierSupported(true)

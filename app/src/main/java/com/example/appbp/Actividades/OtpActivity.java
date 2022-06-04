@@ -259,33 +259,28 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     private void inicioClienteSMSRetriever() {
-        // Get an instance of SmsRetrieverClient, used to start listening for a matching
-        // SMS message.
-        SmsRetrieverClient client = SmsRetriever.getClient(this /* context */);
-        // Starts SmsRetriever, which waits for ONE matching SMS message until timeout
-        // (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
-        // action SmsRetriever#SMS_RETRIEVED_ACTION.
+
+        SmsRetrieverClient client = SmsRetriever.getClient(this );
+        // SmsRetriever, espera a que llegue un SMS(5 minutes).
+        // El SMS se recibe por un BroadcastIntent dentro de
+        // SmsRetriever#SMS_RETRIEVED_ACTION.
         Task<Void> task = client.startSmsRetriever();
-        // Listen for success/failure of the start Task. If in a background thread, this
-        // can be made blocking using Tasks.await(task, [timeout]);
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                // Successfully started retriever, expect broadcast intent
-                //SMSBroadcastReceiver s = new SMSBroadcastReceiver();
+                // Se reciben los datos por el intent
                 Intent intent = getIntent();
                 String msg = intent.getStringExtra("message");
+                //Se modifica la vista
                 cOTP.setText(msg);
                 if(msg!=null) {
                     bCont.setVisibility(View.VISIBLE);
                 }
             }
         });
-
         task.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Failed to start retriever, inspect Exception for more details
             }
         });
     }

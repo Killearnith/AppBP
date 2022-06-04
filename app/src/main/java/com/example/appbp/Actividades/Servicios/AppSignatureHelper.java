@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 //Obtenido del repositorio de Android: https://github.com/android/identity-samples/tree/main/SmsVerification/app/src/main/java/com/google/samples/smartlock/sms_verify/ui
-
+//O la respuesta de StackOverflow: https://stackoverflow.com/questions/53849023/android-sms-retriever-api-computing-apps-hash-string-problem
 /**
  * This is a helper class to generate your message hash to be included in your SMS message.
  *
