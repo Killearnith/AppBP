@@ -104,6 +104,7 @@ public class verificadoActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.d(TAG, "FALLO AL RECIBIR TOKEN");
+                                medio.setText("FALLO AL RECIBIR TOKEN");
                                 error.printStackTrace();
                             }
                         });

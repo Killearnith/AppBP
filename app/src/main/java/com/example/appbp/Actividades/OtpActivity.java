@@ -164,7 +164,6 @@ public class OtpActivity extends AppCompatActivity {
                     }
                 }
             });
-            // Instantiate the RequestQueue.
         }
 
         //Comenzamos el cliente SMSRetriever
@@ -188,7 +187,7 @@ public class OtpActivity extends AppCompatActivity {
             //Obtener token de Auth
             String url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCO0wQa_fia6ojLkFCzLG-sft5XUWF2Skw";
             Log.d("Test", "Aqui llego");
-            // Request a string response from the provided URL.
+            //Codigo correspondiente al envio por API Rest al Servidor para comprobar la clave OTP.
             RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
             JSONObject postData = new JSONObject();
             try {
@@ -288,8 +287,7 @@ public class OtpActivity extends AppCompatActivity {
         });
         task.addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-            }
+            public void onFailure(@NonNull Exception e) { }
         });
     }
 }
