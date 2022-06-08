@@ -41,7 +41,7 @@ public class OtpActivity extends AppCompatActivity {
     private Button bCont;
     private ProgressBar pBar;
     private EditText cOTP;
-    private String nTel;
+    private String nTel, urlBD;
     private int clave;
     private FirebaseApp app;
     private FirebaseAuth auten;
@@ -66,6 +66,7 @@ public class OtpActivity extends AppCompatActivity {
             //otpClave.setTelefono(nTel);
             if(dat!=null) {
                 nTel = dat.getTelefono();
+                urlBD = dat.getUrlDB();
             }
             if (nTel != null) {
                 //Creamos el gson para guardar un json en shared preferences
@@ -100,7 +101,6 @@ public class OtpActivity extends AppCompatActivity {
         //Obtener token de Auth
         String url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCO0wQa_fia6ojLkFCzLG-sft5XUWF2Skw";
         Log.d("Test", "Aqui llego");
-        // Request a string response from the provided URL.
         RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
         JSONObject postData = new JSONObject();
         try {
@@ -132,9 +132,13 @@ public class OtpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        String url = "https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth=" + auth;
-                        Log.d("Test", "Aqui llego");
-                        // Request a string response from the provided URL.
+                        String url;
+                        if(urlBD == null) {
+                            url = "https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth=" + auth;
+                        }else {
+                            url = urlBD;
+                        }
+                        //Codigo correspondiente al envio por API Rest al Servidor para comprobar la clave OTP.
                         RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
                         JSONObject postData = new JSONObject();
                         try {
@@ -150,7 +154,7 @@ public class OtpActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                error.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Error URL no existente o sin permisos", Toast.LENGTH_SHORT).show();
                             }
                         });
                         requestQueue.add(jsonObjectRequest);
@@ -217,8 +221,13 @@ public class OtpActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        String url = "https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth=" + auth;
-                        // Request a string response from the provided URL.
+                        String url;
+                        if(urlBD == null) {
+                            url = "https://smsretrieverservera-default-rtdb.europe-west1.firebasedatabase.app/numeros.json?auth=" + auth;
+                        }else {
+                            url = urlBD;
+                        }
+                        // Se pide una JSON respuesta de la URL BD.
                         RequestQueue requestQueue = Volley.newRequestQueue(OtpActivity.this);
                         JSONObject newData = new JSONObject();
                         try {
@@ -238,7 +247,7 @@ public class OtpActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                error.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "Error URL no existente o sin permisos", Toast.LENGTH_SHORT).show();
                             }
                         });
                         requestQueue.add(jsonObjectRequest2);
@@ -247,7 +256,6 @@ public class OtpActivity extends AppCompatActivity {
                     }
                 }
             });
-            // Instantiate the RequestQueue.
 
             //Código necesario para obtener el codigo hash de la app
             //AppSignatureHelper appSignatureHelper = new AppSignatureHelper(this);
