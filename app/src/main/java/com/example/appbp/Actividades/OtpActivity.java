@@ -265,6 +265,7 @@ public class OtpActivity extends AppCompatActivity {
 
     }
 
+    //REF: https://developers.google.com/identity/sms-retriever/request
     private void inicioClienteSMSRetriever() {
 
         SmsRetrieverClient client = SmsRetriever.getClient(this );
